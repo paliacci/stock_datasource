@@ -36,7 +36,8 @@ class ClickHouseHttpClient:
         self.database = database
         self.name = name
         self._lock = threading.Lock()
-        self._base_url = f"http://{host}:{port}/"
+        protocol = "https" if port in [8443, 9440] else "http"
+        self._base_url = f"{protocol}://{host}:{port}/"
         self._auth = (user, password) if password else None
         # Use a Session with trust_env=False to completely bypass OS-level proxy
         # env vars (HTTP_PROXY/HTTPS_PROXY) that may be set by plugin discovery.
@@ -45,7 +46,7 @@ class ClickHouseHttpClient:
         self._session.trust_env = False
         if self._auth:
             self._session.auth = self._auth
-        logger.info(f"Initialized ClickHouse HTTP client [{name}]: {host}:{port}")
+        logger.info(f"Initialized ClickHouse HTTP client [{name}]: {protocol}://{host}:{port}")
     
     def _request(self, query: str, params: Optional[Dict] = None, data: str = None) -> str:
         """Execute HTTP request to ClickHouse."""
@@ -122,10 +123,13 @@ class ClickHouseHttpClient:
                 
                 result = self._request(query, params)
                 
-                if not result:
+                if not result or not result.strip():
                     return pd.DataFrame()
                 
-                return pd.read_csv(io.StringIO(result), sep="\t", na_values=["\\N"])
+                try:
+                    return pd.read_csv(io.StringIO(result), sep="\t", na_values=["\\N"])
+                except pd.errors.EmptyDataError:
+                    return pd.DataFrame()
             except Exception as e:
                 logger.error(f"HTTP query execution failed [{self.name}]: {e}")
                 raise
@@ -176,7 +180,7 @@ class ClickHouseClient:
     
     def __init__(self, host: str = None, port: int = None, user: str = None, 
                  password: str = None, database: str = None, name: str = "primary",
-                 http_port: int = 8123, prefer_http: bool = False):
+                 http_port: int = None, prefer_http: bool = False):
         """Initialize ClickHouse client.
         
         Args:
@@ -186,7 +190,7 @@ class ClickHouseClient:
             password: ClickHouse password (default: from settings)
             database: ClickHouse database (default: from settings)
             name: Client name for logging (default: "primary")
-            http_port: HTTP port for fallback (default: 8123)
+            http_port: HTTP port for fallback (default: from settings)
             prefer_http: If True, use HTTP directly without trying TCP first
         """
         self.host = host or settings.CLICKHOUSE_HOST
@@ -195,7 +199,7 @@ class ClickHouseClient:
         self.password = password or settings.CLICKHOUSE_PASSWORD
         self.database = database or settings.CLICKHOUSE_DATABASE
         self.name = name
-        self.http_port = http_port
+        self.http_port = http_port or getattr(settings, 'CLICKHOUSE_HTTP_PORT', 8123)
         self.client = None
         self._http_client = None
         self._use_http = prefer_http
@@ -231,6 +235,7 @@ class ClickHouseClient:
                 user=self.user,
                 password=self.password,
                 database=self.database,
+                secure=(self.port in [9440, 8443]),
                 connect_timeout=3,  # Reduced from 10s for faster HTTP fallback
                 send_receive_timeout=60,
                 sync_request_timeout=60,

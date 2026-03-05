@@ -86,6 +86,10 @@ class TuShareIndexDailyPlugin(BasePlugin):
         if 'trade_date' in data.columns:
             data['trade_date'] = pd.to_datetime(data['trade_date'], format='%Y%m%d').dt.date
         
+        # Rename pct_chg to pct_change to match schema
+        if 'pct_chg' in data.columns:
+            data.rename(columns={'pct_chg': 'pct_change'}, inplace=True)
+        
         return data
     
     def load_data(self, data: pd.DataFrame) -> Dict[str, Any]:

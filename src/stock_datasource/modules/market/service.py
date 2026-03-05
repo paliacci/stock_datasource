@@ -687,8 +687,8 @@ class MarketService:
         try:
             for code, name in index_codes:
                 query = """
-                    SELECT close, pct_chg, vol, amount
-                    FROM ods_index_daily
+                    SELECT close, pct_change as pct_chg, vol, amount
+                    FROM ods_idx_factor_pro
                     WHERE ts_code = %(code)s
                     ORDER BY trade_date DESC
                     LIMIT 1

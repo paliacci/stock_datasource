@@ -34,6 +34,7 @@ class Settings(BaseSettings):
     # ClickHouse settings (Primary)
     CLICKHOUSE_HOST: str = Field(default="localhost")
     CLICKHOUSE_PORT: int = Field(default=9000)
+    CLICKHOUSE_HTTP_PORT: int = Field(default=8123)
     CLICKHOUSE_USER: str = Field(default="default")
     CLICKHOUSE_PASSWORD: str = Field(default="")
     CLICKHOUSE_DATABASE: str = Field(default="stock_data")
@@ -47,7 +48,7 @@ class Settings(BaseSettings):
     
     # TuShare settings
     TUSHARE_TOKEN: str = Field(default="")
-    TUSHARE_RATE_LIMIT: int = Field(default=120)  # calls per minute
+    TUSHARE_RATE_LIMIT: int = Field(default=40)  # calls per minute
     TUSHARE_MAX_RETRIES: int = Field(default=3)
     
     # HTTP Proxy settings

@@ -529,6 +529,8 @@ class BasePlugin(ABC):
                 else:
                     create_sql += f"\nORDER BY ({order_by})"
             
+            create_sql += "\nSETTINGS allow_nullable_key = 1"
+            
             if comment:
                 create_sql += f"\nCOMMENT '{comment}'"
             

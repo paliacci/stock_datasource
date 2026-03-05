@@ -41,3 +41,17 @@ class TuShareRtEtfKPlugin(BasePlugin):
         if not ts_code:
             return pd.DataFrame()
         return extractor.extract(ts_code=ts_code)
+
+    def load_data(self, data: pd.DataFrame) -> Dict[str, Any]:
+        if not self.db:
+            return {"status": "failed", "error": "Database not initialized"}
+        if data.empty:
+            return {"status": "no_data", "loaded_records": 0}
+        
+        try:
+            table_name = "ods_rt_etf_k"
+            ods_data = self._prepare_data_for_insert(table_name, data)
+            self.db.insert_dataframe(table_name, ods_data)
+            return {"status": "success", "table": table_name, "loaded_records": len(ods_data)}
+        except Exception as e:
+            return {"status": "failed", "error": str(e)}

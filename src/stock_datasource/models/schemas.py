@@ -177,3 +177,27 @@ PREDEFINED_SCHEMAS = {
     "meta_schema_catalog": META_SCHEMA_CATALOG_SCHEMA,
     "fact_daily_bar": FACT_DAILY_BAR_SCHEMA,
 }
+
+PREDEFINED_SCHEMAS['dim_security'] = TableSchema(
+    table_name='dim_security',
+    table_type=TableType.DIM,
+    columns=[
+        ColumnDefinition(name='ts_code', data_type='String', nullable=False, comment='股票代码', default_value=None),
+        ColumnDefinition(name='symbol', data_type='String', nullable=True, comment='股票代码', default_value=None),
+        ColumnDefinition(name='name', data_type='String', nullable=True, comment='股票名称', default_value=None),
+        ColumnDefinition(name='area', data_type='String', nullable=True, comment='所在地域', default_value=None),
+        ColumnDefinition(name='industry', data_type='String', nullable=True, comment='所属行业', default_value=None),
+        ColumnDefinition(name='market', data_type='String', nullable=True, comment='市场类型', default_value=None),
+        ColumnDefinition(name='list_date', data_type='String', nullable=True, comment='上市日期', default_value=None),
+        ColumnDefinition(name='delist_date', data_type='String', nullable=True, comment='退市日期', default_value=None),
+        ColumnDefinition(name='list_status', data_type='String', nullable=True, comment='上市状态', default_value=None),
+        # Remove default_value='now()' to avoid type errors since the schema manager can add standard ones automatically or we can provide it with correct types manually if needed
+        ColumnDefinition(name='version', data_type='UInt32', nullable=False, default_value='toUInt32(toUnixTimestamp(now()))', comment='version'),
+        ColumnDefinition(name='_ingested_at', data_type='DateTime', nullable=False, default_value='now()', comment='_ingested_at'),
+    ],
+    partition_by=None,
+    order_by=['ts_code'],
+    engine='ReplacingMergeTree',
+    engine_params=['version'],
+    comment='Security dimension table'
+)

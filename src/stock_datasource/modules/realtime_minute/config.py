@@ -90,8 +90,8 @@ COLLECT_FREQ: Dict[str, int] = {
 DEFAULT_BAR_FREQ = "1min"
 
 # Rate limiting – max Tushare API calls per minute
-RATE_LIMIT_PER_MINUTE = 120
-MIN_CALL_INTERVAL = 60.0 / RATE_LIMIT_PER_MINUTE  # ~0.5s
+RATE_LIMIT_PER_MINUTE = 40
+MIN_CALL_INTERVAL = 60.0 / RATE_LIMIT_PER_MINUTE  # ~1.5s
 
 # Retry
 MAX_RETRIES = 3

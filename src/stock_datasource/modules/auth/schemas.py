@@ -7,14 +7,14 @@ from typing import Optional
 
 class UserRegisterRequest(BaseModel):
     """User registration request."""
-    email: EmailStr = Field(..., description="用户邮箱")
+    email: str = Field(..., description="用户邮箱")
     password: str = Field(..., min_length=6, max_length=128, description="密码，至少6位")
     username: Optional[str] = Field(None, max_length=50, description="用户名（可选，默认使用邮箱前缀）")
 
 
 class UserLoginRequest(BaseModel):
     """User login request."""
-    email: EmailStr = Field(..., description="用户邮箱")
+    email: str = Field(..., description="用户邮箱")
     password: str = Field(..., description="密码")
 
 
@@ -44,7 +44,7 @@ class RegisterResponse(BaseModel):
 
 class WhitelistEmailRequest(BaseModel):
     """Add email to whitelist request."""
-    email: EmailStr = Field(..., description="要添加的邮箱")
+    email: str = Field(..., description="要添加的邮箱")
 
 
 class WhitelistEmailResponse(BaseModel):

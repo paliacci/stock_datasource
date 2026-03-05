@@ -20,7 +20,11 @@ const form = ref({
 const formRules = computed(() => ({
   email: [
     { required: true, message: '请输入邮箱', trigger: 'blur' },
-    { email: true, message: '请输入有效的邮箱地址', trigger: 'blur' }
+    { 
+      validator: (val: string) => /^\S+@\S+$/.test(val), 
+      message: '请输入有效的邮箱地址', 
+      trigger: 'blur' 
+    }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },

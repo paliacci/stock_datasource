@@ -11,11 +11,11 @@ export default defineConfig({
   },
   server: {
     host: '0.0.0.0', // 允许外部IP访问
-    port: 3000,
+    port: 3008,
     strictPort: false, // 允许使用其他端口
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'http://127.0.0.1:8008',
         changeOrigin: true,
         rewrite: (path) => {
           console.log('Proxy rewrite:', path)

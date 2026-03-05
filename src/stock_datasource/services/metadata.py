@@ -188,7 +188,21 @@ class MetadataService:
             result = self.db.execute_query(query, params)
             
             if result.empty:
-                return {"message": "No ingestion data found"}
+                return {
+                    "period": {
+                        "start_date": start_date,
+                        "end_date": end_date
+                    },
+                    "summary": {
+                        "total_tasks": 0,
+                        "successful_tasks": 0,
+                        "failed_tasks": 0,
+                        "total_records": 0
+                    },
+                    "by_api": {},
+                    "by_table": {},
+                    "message": "No ingestion data found"
+                }
             
             # Process results
             stats = {

@@ -2,13 +2,33 @@
   "table_name": "ods_suspend_d",
   "database": "stock_datasource",
   "columns": [
-    {"name": "ts_code", "type": "String", "comment": "股票代码"},
-    {"name": "trade_date", "type": "String", "comment": "停复牌日期"},
-    {"name": "suspend_timing", "type": "Nullable(String)", "comment": "日内停牌时间段"},
-    {"name": "suspend_type", "type": "String", "comment": "停复牌类型：S-停牌，R-复牌"}
+    {
+      "name": "ts_code",
+      "comment": "股票代码",
+      "data_type": "String"
+    },
+    {
+      "name": "trade_date",
+      "comment": "停复牌日期",
+      "data_type": "String"
+    },
+    {
+      "name": "suspend_timing",
+      "comment": "日内停牌时间段",
+      "data_type": "Nullable(String)"
+    },
+    {
+      "name": "suspend_type",
+      "comment": "停复牌类型：S-停牌，R-复牌",
+      "data_type": "String"
+    }
   ],
   "engine": "ReplacingMergeTree()",
   "partition_by": "substring(trade_date, 1, 6)",
-  "order_by": ["ts_code", "trade_date", "suspend_type"],
+  "order_by": [
+    "ts_code",
+    "trade_date",
+    "suspend_type"
+  ],
   "comment": "每日停复牌信息"
 }

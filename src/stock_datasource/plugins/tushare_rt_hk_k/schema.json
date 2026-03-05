@@ -2,22 +2,81 @@
   "table_name": "ods_rt_kline_daily_hk",
   "engine": "ReplacingMergeTree(version)",
   "partition_by": "trade_date",
-  "order_by": ["trade_date", "ts_code"],
+  "order_by": [
+    "trade_date",
+    "ts_code"
+  ],
   "comment": "港股实时日线快照 from TuShare rt_hk_k API",
   "columns": [
-    {"name": "trade_date", "type": "Date", "comment": "交易日期"},
-    {"name": "ts_code", "type": "LowCardinality(String)", "comment": "证券代码"},
-    {"name": "name", "type": "Nullable(String)", "comment": "证券名称"},
-    {"name": "open", "type": "Nullable(Float64)", "comment": "开盘价"},
-    {"name": "close", "type": "Nullable(Float64)", "comment": "收盘价/最新价"},
-    {"name": "high", "type": "Nullable(Float64)", "comment": "最高价"},
-    {"name": "low", "type": "Nullable(Float64)", "comment": "最低价"},
-    {"name": "pre_close", "type": "Nullable(Float64)", "comment": "昨收价"},
-    {"name": "vol", "type": "Nullable(Float64)", "comment": "成交量"},
-    {"name": "pct_chg", "type": "Nullable(Float32)", "comment": "涨跌幅(%)"},
-    {"name": "bid", "type": "Nullable(Float64)", "comment": "买一价"},
-    {"name": "ask", "type": "Nullable(Float64)", "comment": "卖一价"},
-    {"name": "collected_at", "type": "DateTime", "comment": "采集时间"},
-    {"name": "version", "type": "UInt64", "comment": "版本号(毫秒)"}
+    {
+      "name": "trade_date",
+      "comment": "交易日期",
+      "data_type": "Date"
+    },
+    {
+      "name": "ts_code",
+      "comment": "证券代码",
+      "data_type": "LowCardinality(String)"
+    },
+    {
+      "name": "name",
+      "comment": "证券名称",
+      "data_type": "Nullable(String)"
+    },
+    {
+      "name": "open",
+      "comment": "开盘价",
+      "data_type": "Nullable(Float64)"
+    },
+    {
+      "name": "close",
+      "comment": "收盘价/最新价",
+      "data_type": "Nullable(Float64)"
+    },
+    {
+      "name": "high",
+      "comment": "最高价",
+      "data_type": "Nullable(Float64)"
+    },
+    {
+      "name": "low",
+      "comment": "最低价",
+      "data_type": "Nullable(Float64)"
+    },
+    {
+      "name": "pre_close",
+      "comment": "昨收价",
+      "data_type": "Nullable(Float64)"
+    },
+    {
+      "name": "vol",
+      "comment": "成交量",
+      "data_type": "Nullable(Float64)"
+    },
+    {
+      "name": "pct_chg",
+      "comment": "涨跌幅(%)",
+      "data_type": "Nullable(Float32)"
+    },
+    {
+      "name": "bid",
+      "comment": "买一价",
+      "data_type": "Nullable(Float64)"
+    },
+    {
+      "name": "ask",
+      "comment": "卖一价",
+      "data_type": "Nullable(Float64)"
+    },
+    {
+      "name": "collected_at",
+      "comment": "采集时间",
+      "data_type": "DateTime"
+    },
+    {
+      "name": "version",
+      "comment": "版本号(毫秒)",
+      "data_type": "UInt64"
+    }
   ]
 }
