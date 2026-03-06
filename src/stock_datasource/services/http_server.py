@@ -652,7 +652,7 @@ if __name__ == "__main__":
     uvicorn.run(
         app,
         host="0.0.0.0",
-        port=8008,
+        port=3389,
         log_level="info",
         access_log=False,  # Disable default access log, using custom middleware instead
     )
