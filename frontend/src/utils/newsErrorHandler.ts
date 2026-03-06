@@ -159,9 +159,9 @@ export const withRetry = async <T>(
 
       // 计算延迟时间
       const delay = retryConfig.retryDelay * Math.pow(retryConfig.backoffMultiplier, attempt)
-      
+
       console.warn(`新闻API请求失败，${delay}ms后进行第${attempt + 1}次重试:`, lastError.message)
-      
+
       // 等待后重试
       await new Promise(resolve => setTimeout(resolve, delay))
     }
@@ -270,12 +270,12 @@ export const safeApiCall = async <T>(
   try {
     return await withRetry(apiCall, retryConfig)
   } catch (error) {
-    const newsError = error instanceof Error && 'type' in error 
-      ? error as NewsError 
+    const newsError = error instanceof Error && 'type' in error
+      ? error as unknown as NewsError
       : classifyError(error)
-    
+
     handleNewsError(newsError, showError)
-    
+
     return fallbackValue ?? null
   }
 }

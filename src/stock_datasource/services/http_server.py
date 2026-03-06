@@ -343,7 +343,9 @@ async def lifespan(app: FastAPI):
     # Start background workers in local dev mode
     try:
         if _is_local_dev():
-            _start_background_workers(num_workers=10)
+            import os
+            workers = int(os.environ.get("BACKEND_WORKERS", 1))
+            _start_background_workers(num_workers=workers)
         else:
             logger.info("Docker environment detected - workers run in separate container")
     except Exception as e:

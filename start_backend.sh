@@ -10,5 +10,10 @@ else
 fi
 
 echo "Starting backend service..."
-# source $HOME/.local/bin/env
+if [ -f "$HOME/.local/bin/env" ]; then
+    source "$HOME/.local/bin/env"
+elif [ -f "$HOME/.cargo/env" ]; then
+    source "$HOME/.cargo/env"
+fi
+
 uv run python -m stock_datasource.services.http_server

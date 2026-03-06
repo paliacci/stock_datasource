@@ -147,6 +147,7 @@ const config = reactive<SchedulerConfigUpdate>({
 
 const status = reactive<SchedulerStatus & { current_task?: string }>({
   enabled: false,
+  thread_alive: false,
   is_running: false,
   data_sync_time: '18:00',
   analysis_time: '18:30',

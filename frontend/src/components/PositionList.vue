@@ -102,13 +102,13 @@
             ¥{{ formatNumber(selectedPosition.market_value) }}
           </el-descriptions-item>
           <el-descriptions-item label="盈亏金额">
-            <span :class="selectedPosition.profit_loss >= 0 ? 'profit' : 'loss'">
-              ¥{{ formatNumber(selectedPosition.profit_loss) }}
+            <span :class="(selectedPosition.profit_loss || 0) >= 0 ? 'profit' : 'loss'">
+              ¥{{ formatNumber(selectedPosition.profit_loss || 0) }}
             </span>
           </el-descriptions-item>
           <el-descriptions-item label="收益率">
-            <span :class="selectedPosition.profit_rate >= 0 ? 'profit' : 'loss'">
-              {{ formatNumber(selectedPosition.profit_rate) }}%
+            <span :class="(selectedPosition.profit_rate || 0) >= 0 ? 'profit' : 'loss'">
+              {{ formatNumber(selectedPosition.profit_rate || 0) }}%
             </span>
           </el-descriptions-item>
           <el-descriptions-item label="买入日期">

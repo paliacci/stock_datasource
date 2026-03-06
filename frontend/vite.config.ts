@@ -15,7 +15,7 @@ export default defineConfig({
     strictPort: false, // 允许使用其他端口
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8008',
+        target: 'http://60.205.199.118:3389',
         changeOrigin: true,
         rewrite: (path) => {
           console.log('Proxy rewrite:', path)

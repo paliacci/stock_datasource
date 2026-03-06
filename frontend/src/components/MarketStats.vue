@@ -189,12 +189,12 @@ const selectedDate = ref(new Date().toISOString().split('T')[0])
 // Computed local
 const maxReasonCount = computed(() => {
   if (!marketStats.value?.top_reasons?.length) return 1
-  return Math.max(...marketStats.value.top_reasons.map(r => r.count))
+  return Math.max(...marketStats.value.top_reasons.map((r: any) => r.count))
 })
 
 const maxSectorCount = computed(() => {
   if (!marketStats.value?.sector_distribution?.length) return 1
-  return Math.max(...marketStats.value.sector_distribution.map(s => s.count))
+  return Math.max(...marketStats.value.sector_distribution.map((s: any) => s.count))
 })
 
 // Methods
@@ -224,22 +224,22 @@ const formatAmount = (amount?: number): string => {
 const getPositiveCount = (): number => {
   if (!marketStats.value?.sector_distribution) return 0
   return marketStats.value.sector_distribution
-    .filter(s => s.avg_pct_chg > 0)
-    .reduce((sum, s) => sum + s.count, 0)
+    .filter((s: any) => s.avg_pct_chg > 0)
+    .reduce((sum: number, s: any) => sum + s.count, 0)
 }
 
 const getNegativeCount = (): number => {
   if (!marketStats.value?.sector_distribution) return 0
   return marketStats.value.sector_distribution
-    .filter(s => s.avg_pct_chg < 0)
-    .reduce((sum, s) => sum + s.count, 0)
+    .filter((s: any) => s.avg_pct_chg < 0)
+    .reduce((sum: number, s: any) => sum + s.count, 0)
 }
 
 const getLimitUpCount = (): number => {
   if (!marketStats.value?.sector_distribution) return 0
   return marketStats.value.sector_distribution
-    .filter(s => s.avg_pct_chg > 9.5)
-    .reduce((sum, s) => sum + s.count, 0)
+    .filter((s: any) => s.avg_pct_chg > 9.5)
+    .reduce((sum: number, s: any) => sum + s.count, 0)
 }
 
 // Initialize

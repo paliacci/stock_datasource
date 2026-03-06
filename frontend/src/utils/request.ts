@@ -1,6 +1,19 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { MessagePlugin } from 'tdesign-vue-next'
 
+declare module 'axios' {
+  export interface AxiosInstance {
+    request<T = any, R = T, D = any>(config: AxiosRequestConfig<D>): Promise<R>;
+    get<T = any, R = T, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
+    delete<T = any, R = T, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
+    head<T = any, R = T, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
+    options<T = any, R = T, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
+    post<T = any, R = T, D = any>(url: string, data?: any, config?: AxiosRequestConfig<D>): Promise<R>;
+    put<T = any, R = T, D = any>(url: string, data?: any, config?: AxiosRequestConfig<D>): Promise<R>;
+    patch<T = any, R = T, D = any>(url: string, data?: any, config?: AxiosRequestConfig<D>): Promise<R>;
+  }
+}
+
 const baseURL = import.meta.env.VITE_API_BASE_URL || ''
 
 const instance: AxiosInstance = axios.create({
@@ -16,7 +29,7 @@ instance.interceptors.request.use(
   (config) => {
     console.log('发送API请求:', config.method?.toUpperCase(), config.url)
     console.log('请求配置:', config)
-    
+
     const token = localStorage.getItem('token')
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
@@ -34,7 +47,7 @@ instance.interceptors.response.use(
   (response: AxiosResponse) => {
     console.log('收到API响应:', response.status, response.config.url)
     console.log('响应数据:', response.data)
-    
+
     const { data } = response
     // Check for error response format (status code, not stock code)
     if (data.status !== undefined && data.status === 'error') {
@@ -48,28 +61,28 @@ instance.interceptors.response.use(
   (error) => {
     console.error('响应拦截器错误:', error)
     console.error('错误响应:', error.response)
-    
+
     const status = error.response?.status
     const detail = error.response?.data?.detail
-    
+
     // Handle 401 Unauthorized
     if (status === 401) {
       // Clear auth state
       localStorage.removeItem('token')
       localStorage.removeItem('user')
-      
+
       // Show message
       MessagePlugin.warning(detail || '登录已过期，请重新登录')
-      
+
       // Redirect to login page if not already there
       const currentPath = window.location.pathname
       if (currentPath !== '/login') {
         window.location.href = `/login?redirect=${encodeURIComponent(currentPath)}`
       }
-      
+
       return Promise.reject(error)
     }
-    
+
     const message = detail || error.response?.data?.message || error.message || '网络错误'
     MessagePlugin.error(message)
     return Promise.reject(error)

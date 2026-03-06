@@ -66,7 +66,7 @@ export class NewsCacheManager {
   // 设置缓存
   set<T>(prefix: string, params: Record<string, any>, data: T): void {
     const key = this.generateKey(prefix, params)
-    
+
     this.cache.set(key, {
       data,
       timestamp: Date.now(),
@@ -140,7 +140,7 @@ export class NewsCacheManager {
 
 // 新闻专用缓存方法
 export class NewsCache {
-  private cacheManager: NewsCacheManager
+  public cacheManager: NewsCacheManager
 
   constructor(config?: Partial<CacheConfig>) {
     this.cacheManager = new NewsCacheManager(config)
@@ -243,7 +243,7 @@ export function withCache<T extends any[], R>(
 
     descriptor.value = async function (...args: T) {
       const cacheParams = keyGenerator(...args)
-      
+
       // 尝试从缓存获取
       const cached = cache.cacheManager.get(cacheKey, cacheParams)
       if (cached !== null) {
@@ -254,7 +254,7 @@ export function withCache<T extends any[], R>(
       // 缓存未命中，调用原方法
       console.log(`Cache miss for ${cacheKey}:`, cacheParams)
       const result = await method.apply(this, args)
-      
+
       // 缓存结果
       if (result !== null && result !== undefined) {
         cache.cacheManager.set(cacheKey, cacheParams, result)
@@ -276,7 +276,7 @@ export const startCacheCleanup = (intervalMs: number = 60000) => {
   cleanupInterval = setInterval(() => {
     const newsCleanup = newsCache.cleanup()
     const hotTopicsCleanup = hotTopicsCache.cleanup()
-    
+
     if (newsCleanup > 0 || hotTopicsCleanup > 0) {
       console.log(`Cache cleanup: removed ${newsCleanup + hotTopicsCleanup} expired items`)
     }

@@ -216,7 +216,7 @@ import {
 import type { AnalysisReport } from '@/types/portfolio'
 
 interface Props {
-  analysisData: AnalysisReport | null
+  analysisData: any | null
   loading?: boolean
 }
 

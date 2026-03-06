@@ -66,6 +66,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/strategy',
     name: 'Strategy',
+    // @ts-ignore
     component: () => import('@/views/StrategyWorkbench.vue'),
     meta: { title: '策略工具台', icon: 'tools', requiresAuth: true }
   },
@@ -141,7 +142,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/arena/ArenaManagement.vue'),
     meta: { title: '多Agent竞技场', icon: 'data-analysis', requiresAuth: true }
   },
-{
+  {
     path: '/arena/:id',
     name: 'ArenaDetail',
     component: () => import('@/views/arena/ArenaDetail.vue'),

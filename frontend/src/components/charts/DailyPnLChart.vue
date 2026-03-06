@@ -275,7 +275,7 @@ function updateChart() {
   // 如果显示累计收益，添加右侧Y轴
   if (props.showCumulative) {
     option.yAxis = [
-      option.yAxis![0],
+      (option.yAxis as any[])[0],
       {
         type: 'value',
         name: '累计收益率 (%)',
